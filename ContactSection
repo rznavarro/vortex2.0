@@ -1,0 +1,121 @@
+
+import React, { useState } from 'react';
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Send } from "lucide-react";
+
+export default function ContactSection() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    setTimeout(() => {
+      setIsSubmitting(false);
+      alert('Mensaje enviado correctamente.');
+      setFormData({ name: '', email: '', message: '' });
+    }, 2000);
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  return (
+    <section id="contact" className="py-40 bg-gradient-to-b from-black to-gray-950">
+      <div className="max-w-3xl mx-auto px-8 lg:px-12">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          viewport={{ once: true }}
+          className="text-center mb-20"
+        >
+          <h2 className="text-4xl md:text-6xl font-light vortexia-serif mb-8">
+            <span className="vortexia-text-gradient">Conversemos</span>
+          </h2>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
+            Estamos aquí para transformar tu visión en realidad.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="max-w-xl mx-auto"
+        >
+          <form onSubmit={handleSubmit} className="space-y-10">
+            <div className="grid md:grid-cols-2 gap-10">
+              <div>
+                <Input
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="bg-transparent border-0 border-b border-gray-700 rounded-none text-white placeholder-gray-500 font-light text-lg py-4 focus:border-crimson-400"
+                  placeholder="Nombre"
+                />
+              </div>
+              <div>
+                <Input
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="bg-transparent border-0 border-b border-gray-700 rounded-none text-white placeholder-gray-500 font-light text-lg py-4 focus:border-crimson-400"
+                  placeholder="Email"
+                />
+              </div>
+            </div>
+            
+            <div>
+              <Textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                required
+                rows={3}
+                className="bg-transparent border-0 border-b border-gray-700 rounded-none text-white placeholder-gray-500 font-light text-lg py-4 focus:border-crimson-400 resize-none"
+                placeholder="Tu mensaje"
+              />
+            </div>
+            
+            <div className="text-center pt-8">
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-crimson-600 hover:bg-crimson-700 text-white px-12 py-4 rounded-full text-lg font-light vortexia-hover vortexia-glow"
+              >
+                {isSubmitting ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                    Enviando...
+                  </div>
+                ) : (
+                  <>
+                    Enviar Mensaje
+                    <Send className="w-5 h-5 ml-3" />
+                  </>
+                )}
+              </Button>
+            </div>
+          </form>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
